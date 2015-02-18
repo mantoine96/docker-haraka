@@ -1,3 +1,4 @@
+//Thanks to Guillaume Collic (https://github.com/gcollic/haraka-alias-forward)  and Chad Smith (https://github.com/chadsmith/haraka-alias-forward)
 var
   Address = require('./address').Address,
   util = require('util');
