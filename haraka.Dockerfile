@@ -5,7 +5,7 @@ MAINTAINER Matthieu ANTOINE "matthieuinspain@gmail.com"
 #Add plugins
 
 #Install spamassassin and git
-RUN apt-get update && install -y \ 
+RUN apt-get update && apt-get install -y \ 
 	spamassassin \
 	git 
 # Here we download the several files  we need in order to have the mailing list up and running
