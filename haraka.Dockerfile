@@ -19,5 +19,4 @@ RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files
 
 EXPOSE 25
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
-CMD ["haraka -c /app"]
+CMD ["/usr/local/bin/haraka -c /app/."]
