@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
 # Here we download the several files  we need in order to have the mailing list up and running
 RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files/plugins -O /app/config/plugins
 RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files/plugins.d/rcpt_to.alias_forward.js -O /app/plugins/rcpt_to.alias_forward.js
+RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files/rcpt_to.alias_forward /app/config/rcpt_to.alias_forward
 # Now we create the git repo where we're going to deploy
 RUN mkdir /haraka-list
 RUN git init /haraka-list --bare
