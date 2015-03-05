@@ -1,7 +1,7 @@
 FROM centos:7
 MAINTAINER Matthieu ANTOINE "matthieuinspain+dockerhub@gmail.com"
 RUN yum -y update && yum -y upgrade && \
-yum -y install spamassassin git curl wget
+yum -y install spamassassin git curl
 RUN curl -sL https://rpm.nodesource.com/setup | bash -
 RUN yum install -y nodejs gcc-c++ make
 RUN npm install -g Haraka
