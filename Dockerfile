@@ -11,7 +11,6 @@ RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files
 RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files/rcpt_to.alias_forward -O /app/config/rcpt_to.alias_forward
 RUN mkdir /git
 RUN git init --bare /git
-RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files/post-receive -O /git/hooks/post-receive 
-VOLUME /git
+RUN wget https://raw.githubusercontent.com/thehunt33r/docker-haraka/master/files/update.sh -O /update.sh
 EXPOSE 25
 CMD ["haraka", "-c", "/app/"]
