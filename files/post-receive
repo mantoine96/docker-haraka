@@ -1,16 +1,34 @@
-#!/usr/bin/env ruby
-# post-receive
-# 1. Read STDIN (Format: "from_commit to_commit branch_name")
-from, to, branch = ARGF.read.split " "
-
-# 2. Only deploy if master branch was pushed
-if (branch =~ /master$/) == nil
-    puts "Received branch #{branch}, not deploying."
-    exit
-end
-
-# 3. Copy files to deploy directory
-deploy_to_dir = "/app/config/"
-`GIT_WORK_TREE="#{deploy_to_dir}" git checkout -f master`
-puts "DEPLOY: master(#{to}) copied to '#{deploy_to_dir}'"
-
+#!/usr/bin/env bash
+set -e
+ 
+echo '>>> Get old container id'
+CID=$(sudo docker ps | grep "harakatest" | awk '{print $1}')
+echo $CID
+echo '>>> Building new image'
+# Due to a bug in Docker we need to analyse the log to find out if build passed (see https://github.com/dotcloud/docker/issues/1875)
+docker build -t harakatest /root/Docker/git/docker-haraka/. | tee /tmp/docker_build_result.log
+RESULT=$(cat /tmp/docker_build_result.log | tail -n 1)
+if [[ "$RESULT" != *Successfully* ]];
+then
+  exit -1
+fi
+ 
+echo '>>> Tagging new image'
+NEW=$(sudo docker ps -a -q | head -n 1)
+sudo docker commit $NEW harakatest
+ 
+ 
+echo '>>> Stopping old container'
+if [ "$CID" != "" ];
+then
+  sudo docker stop $CID
+fi 
+ 
+echo '>>> Starting new container'
+sudo docker run -p 25:25 -d harakatest
+ 
+ 
+echo '>>> Cleaning up containers'
+sudo docker ps -a | grep "Exit" | awk '{print $1}' | while read -r id ; do
+  sudo docker rm $id
+done
